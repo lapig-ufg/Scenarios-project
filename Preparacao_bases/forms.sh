@@ -1,17 +1,20 @@
 #!/bin/bash
+
+#This code will merge, clip, resample, and reproject all scenes of the same file type, provided they are in the same directory.
+
 echo "Iniciando o processamento..."
 
-##Fazer o vrt
+##Make the .vrt
 gdalbuildvrt decliv.vrt slope-*.tif && \
 
-##Transformar .vrt para .tif
+##Convert .vrt for .tif
 gdal_translate decliv.vrt \
     declividadeWGS.tif \
     -co COMPRESS=LZW \
     -co TILED=YES \
     -co BIGTIFF=YES && \
 
-## Recorte 
+## Clip 
 gdalwarp \
     -cutline /home/gui/Documentos/AreaEstudoDissolv/AmaCerrPanREPROJ.shp \
     -crop_to_cutline \
@@ -21,7 +24,7 @@ gdalwarp \
     -co TILED=YES \
     -co BIGTIFF=YES && \
 
-##Reprojetar
+##Reproject
 gdalwarp -t_srs ESRI:102033 \
     declividade_clip.tif \
     decliv_reproj.tif \
@@ -29,7 +32,7 @@ gdalwarp -t_srs ESRI:102033 \
     -co TILED=YES \
     -co BIGTIFF=YES && \
 
-##Redimensionar para 30 metros
+##Resampling for 30 meters
 gdalwarp -tr 30 30 \
     -r near \
     decliv_reproj.tif \
@@ -37,6 +40,8 @@ gdalwarp -tr 30 30 \
     -co COMPRESS=LZW \
     -co TILED=YES \
     -co BIGTIFF=YES && \
+
+#Make a faster visualization file
 gdaladdo slope30.tif 2 4 8
 
 echo "Processamento concluido!"

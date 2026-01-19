@@ -1,3 +1,6 @@
+#!/bin/bash
+
+##Rename the vigor classes
 parallel -j3 '
     gdal_calc.py -A pastagem_EVI_norm_{1}.tif \
         --type=Byte \
