@@ -1,0 +1,42 @@
+#!/bin/bash
+echo "Iniciando o processamento..."
+
+##Fazer o vrt
+gdalbuildvrt decliv.vrt slope-*.tif && \
+
+##Transformar .vrt para .tif
+gdal_translate decliv.vrt \
+    declividadeWGS.tif \
+    -co COMPRESS=LZW \
+    -co TILED=YES \
+    -co BIGTIFF=YES && \
+
+## Recorte 
+gdalwarp \
+    -cutline /home/gui/Documentos/AreaEstudoDissolv/AmaCerrPanREPROJ.shp \
+    -crop_to_cutline \
+    /home/gui/Documentos/DEM30/declividadeWGS.tif \
+    declividade_clip.tif \
+    -co COMPRESS=LZW \
+    -co TILED=YES \
+    -co BIGTIFF=YES && \
+
+##Reprojetar
+gdalwarp -t_srs ESRI:102033 \
+    declividade_clip.tif \
+    decliv_reproj.tif \
+    -co COMPRESS=LZW \
+    -co TILED=YES \
+    -co BIGTIFF=YES && \
+
+##Redimensionar para 30 metros
+gdalwarp -tr 30 30 \
+    -r near \
+    decliv_reproj.tif \
+    slope30.tif \
+    -co COMPRESS=LZW \
+    -co TILED=YES \
+    -co BIGTIFF=YES && \
+gdaladdo slope30.tif 2 4 8
+
+echo "Processamento concluido!"
