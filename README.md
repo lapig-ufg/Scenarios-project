@@ -9,4 +9,4 @@ The Project's central objective was to project scenarios of agricultural intensi
 This repository contains the following:
 - Data: [Input spatial data](Input_Data.md)
 - Model: Dinamica EGO model and required sub-models
-- Scripts: R, JavaScript, Python, Bash scripts
+- Scripts: [R, JavaScript, Python, Bash scripts](Preparacao_bases)
