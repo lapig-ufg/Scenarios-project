@@ -1,7 +1,7 @@
 <h2 align="center">Projeto_CENARIOS</h2>
 
 <div align="center">
-    <img src="figures/proj_cenarios_v2.png" width="80%" alt="Processo de Operacionalização">
+    <img src="Figures/proj_cenarios_v2.png" width="80%" alt="Processo de Operacionalização">
     <p><i>Figura 1: Input database process.</i></p>
 </div>
 
@@ -37,7 +37,7 @@ This repository contains the (following <a name= "following"></a>):
 ## Workflow
 
 <div align="center">
-    <img src="figures/Processo_de_operacionalizacao.jpg" width="75%" alt="Processo de Operacionalização">
+    <img src="Figures/Processo_de_operacionalizacao.jpg" width="75%" alt="Processo de Operacionalização">
     <p><i>Figura 2: Input database process.</i></p>
 </div>
 
