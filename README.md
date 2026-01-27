@@ -38,7 +38,7 @@ This repository contains the (following <a name= "following"></a>):
 
 <div align="center">
     <img src="Figures/processo_de_operacionalizacao.svg" width="75%" alt="Processo de Operacionalização">
-    <p><i>Figura 2: Input database process.</i></p>
+    <p><i>Figura 2: Dinamica EGO process.</i></p>
 </div>
 
 
