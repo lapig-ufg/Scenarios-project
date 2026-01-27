@@ -1,0 +1,643 @@
+@charset = UTF-8
+@date = 2025-Dec-03 15:34:00
+@version = 8.8.0.20250930
+Script {{
+    @collapsed = no
+    @alias = Variaveis input
+    _ := Group .none {{
+        // Precipitação 
+        loadMap3160 := LoadMap {
+            filename = "/content/Regiao_3/Precipitacao_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Idade do Desmatamento 
+        loadMap3161 := LoadMap {
+            filename = "/content/Regiao_3/Idade_Desmatamento_3.tif",
+            nullValue = 127,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Distância de estradas vicinais 
+        loadMap3162 := LoadMap {
+            filename = "/content/Regiao_3/Distancia_Estradas_Vicinais_3.tif",
+            nullValue = -9999,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Distancia de Rios 
+        loadMap3165 := LoadMap {
+            filename = "/content/Regiao_3/Distancia_Drenagem_3.tif",
+            nullValue = -9999,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Densidade populacional 
+        loadMap3163 := LoadMap {
+            filename = "/content/Regiao_3/Densidade_Populacional_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Short vegetation 
+        loadMap3164 := LoadMap {
+            filename = "/content/Regiao_3/ShortVeg_2022_3.tif",
+            nullValue = -32000,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Relevo 
+        loadMap3166 := LoadMap {
+            filename = "/content/Regiao_3/Relevo_3.tif",
+            nullValue = -32768,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Distância de silos 
+        loadMap3167 := LoadMap {
+            filename = "/content/Regiao_3/Distancia_Silo_3.tif",
+            nullValue = -9999,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Distância de frigoríficos 
+        loadMap3168 := LoadMap {
+            filename = "/content/Regiao_3/Distancia_Frigorificos_3.tif",
+            nullValue = -9999,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Distância de estradas 
+        loadMap3169 := LoadMap {
+            filename = "/content/Regiao_3/Distancia_Estradas_3.tif",
+            nullValue = -9999,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Distância de hidrovias 
+        loadMap3170 := LoadMap {
+            filename = "/content/Regiao_3/Distancia_Hidrovia_3.tif",
+            nullValue = -9999,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Declividade 
+        loadMap3171 := LoadMap {
+            filename = "/content/Regiao_3/Declividade_3.tif",
+            nullValue = -9999,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Unidades Territoriais 
+        loadMap3172 := LoadMap {
+            filename = "/content/Regiao_3/Unidade_Territorial_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Imoveis - SIGEF 
+        loadMap3173 := LoadMap {
+            filename = "/content/Regiao_3/Imoveis_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Terras indigenas 
+        loadMap3194 := LoadMap {
+            filename = "/content/Regiao_3/Territorio_Indigena_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Fitofisionomias 
+        loadMap3174 := LoadMap {
+            filename = "/content/Regiao_3/Fitofisionomia_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Aptidão de soja 
+        loadMap3175 := LoadMap {
+            filename = "/content/Regiao_3/Aptidao_soja_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Idade da pastagem para 2018 
+        loadMap3176 := LoadMap {
+            filename = "/content/Regiao_3/Idade_Pastagem_2023_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Vigor da pastagem para 2018 
+        loadMap3177 := LoadMap {
+            filename = "/content/Regiao_3/Vigor_2023_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Distância de hidroportos 
+        loadMap3178 := LoadMap {
+            filename = "/content/Regiao_3/Distancia_Hidroportos_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Integracao 
+        loadMap4338 := LoadMap {
+            filename = "/content/Regiao_3/Integracao_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Distância de terminais ferroviarios 
+        loadMap3179 := LoadMap {
+            filename = "/content/Regiao_3/Distancia_Terminais_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Distância de garimpos ilegais 
+        loadMap3180 := LoadMap {
+            filename = "/content/Regiao_3/Garimpos_Ilegais_3.tif",
+            nullValue = -9999,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Distância de ferrovias 
+        loadMap3181 := LoadMap {
+            filename = "/content/Regiao_3/Distancia_Ferrovias_3.tif",
+            nullValue = -9999,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // APP 
+        loadMap3182 := LoadMap {
+            filename = "/content/Regiao_3/APP_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Codigo_Florestal 
+        loadMap3183 := LoadMap {
+            filename = "/content/Regiao_3/Codigo_Florestal_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // UC Protecao integral 
+        loadMap3193 := LoadMap {
+            filename = "/content/Regiao_3/UC_Protecao_Integral_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+
+        // Reserva legal 
+        loadMap3198 := LoadMap {
+            filename = "/content/Regiao_3/Reserva_Legal_3.tif",
+            nullValue = 0,
+            storageMode = .default,
+            suffixDigits = 0,
+            firstWindowCoordinateX = .none,
+            firstWindowCoordinateY = .none,
+            secondWindowCoordinateX = .none,
+            secondWindowCoordinateY = .none,
+            step = .none,
+            workdir = .none
+        };
+    }};
+
+    // Matriz de transição 
+    loadTable3083 := LoadTable {
+        filename = "/content/Regiao_3/multiple_step_tnc2_3.csv",
+        uniqueIdKeyColumnCreation = .ifNecessary,
+        suffixDigits = 0,
+        step = .none,
+        workdir = .none
+    };
+
+    // Pesos de evidência 
+    loadWeights3082 := LoadWeights {
+        filename = "/content/Regiao_3/peso_tnc2_3.csv",
+        suffixDigits = 0,
+        step = .none,
+        workdir = .none
+    };
+
+    // Paisagem inicial - 2018 
+    loadCategoricalMap3159 := LoadCategoricalMap {
+        filename = "/content/Regiao_3/mapbiomas_2023_3.tif",
+        nullValue = .none,
+        storageMode = .default,
+        suffixDigits = 0,
+        firstWindowCoordinateX = .none,
+        firstWindowCoordinateY = .none,
+        secondWindowCoordinateX = .none,
+        secondWindowCoordinateY = .none,
+        step = .none,
+        workdir = .none
+    };
+
+    // Simulação do modelo 
+    @collapsed = no
+    _ := Repeat 7 .none {{
+        step = step;
+
+        // Não precisa mexer 
+        paisagem := MuxCategoricalMap loadCategoricalMap3159 resultingLandscape;
+
+        // Colocar as classes de distância 
+        calcDistanceMap3089 := CalcDistanceMap {
+            categoricalMap = paisagem,
+            categories = [ 1, 21, 39 ],
+            cellType = .int32,
+            nullValue = .default,
+            truncateDistance = .no
+        };
+
+        // Colocar as transições que acontecem na região 
+        //
+        // ===
+        // Calculate probability map. 
+        @collapsed = no
+        probabilidades := CalcWOfEProbabilityMap {
+            landscape = paisagem,
+            weights = loadWeights3082,
+            transitions = [ 1->21, 1->39, 15->1, 15->39, 21->1, 21->39 ],
+            cellType = .uint8,
+            nullValue = .default
+        } {{
+            NameMap loadMap3182 "APP";
+
+            NameMap loadMap3175 "Aptidao_soja";
+
+            NameMap loadMap3183 "Codigo_florestal";
+
+            NameMap loadMap3171 "Declividade";
+
+            NameMap loadMap3161 "Deforestation";
+
+            NameMap loadMap3163 "Densidade_pop";
+
+            NameMap calcDistanceMap3089 "Distance";
+
+            NameMap loadMap3169 "Distancia_estradas";
+
+            NameMap loadMap3181 "Distancia_ferrovias";
+
+            NameMap loadMap3168 "Distancia_frigorifico";
+
+            NameMap loadMap3178 "Distancia_hidroporto";
+
+            NameMap loadMap3170 "Distancia_hidrovia";
+
+            NameMap loadMap3165 "Distancia_rios";
+
+            NameMap loadMap3167 "Distancia_silos";
+
+            NameMap loadMap3179 "Distancia_terminais";
+
+            NameMap loadMap3162 "Distancia_vicinais";
+
+            NameMap loadMap3174 "Fitofisionomias";
+
+            NameMap loadMap3176 "IdadePastagem_2018";
+
+            NameMap loadMap4338 "Integracao";
+
+            NameMap loadMap3160 "Precipitacao";
+
+            NameMap loadMap3198 "RL";
+
+            NameMap loadMap3166 "Relevo";
+
+            NameMap loadMap3164 "ShortVeg_2018";
+
+            NameMap loadMap3173 "Sigef_Sicar";
+
+            NameMap loadMap3194 "TI";
+
+            NameMap loadMap3193 "UCPI";
+
+            NameMap loadMap3172 "UT";
+
+            NameMap loadMap3177 "Vigor_2018";
+
+            NameMap loadMap3180 "garimpos_ilegais";
+        }};
+
+        // Parte mais importante do modelo! 
+        //
+        // ===
+        // Updated Landscape (Submodel) 
+        @collapsed = no
+        _ := Group .none {{
+            // The landscape map. 
+            landscape := CategoricalMap paisagem;
+
+            // The transition matrix defining net transition rates. 
+            transitionMatrix := TransitionMatrix loadTable3083;
+
+            // This matriz defines the percentage of total transitions performed by expansion 
+            // of existent patches (using Expander operator). The complement of this matrix 
+            // defines the percentage of transitions performed by generation of new patches 
+            // (using Patcher operator). 
+            percentOfTransitionsByExpansion := PercentMatrix [
+                1->21 0.2,
+                1->39 0.8,
+                15->1 0.8,
+                15->39 0.8,
+                21->1 0.8,
+                21->39 0.8
+            ];
+
+            // The probability map. 
+            probabilities := Map probabilidades;
+
+            // The parameters used to generate new patches. These parameters are used by 
+            // Patcher operator. 
+            patchGenerationParameters := TransitionFunctionParameterMatrix [
+                1->21 0.35 0.01 0.01,
+                1->39 0.21 0.01 0.01,
+                15->1 0.42 0.03 0.01,
+                15->39 1.25 0.09 0.01,
+                21->1 0.29 0.01 0.01,
+                21->39 2.01 0.15 0.01
+            ];
+
+            // The parameters used to expand existent patches. The parameters are used by 
+            // Expander operator. 
+            patchExpansionParameters := TransitionFunctionParameterMatrix [
+                1->21 40 2 0.3,
+                1->39 40 1 0.3,
+                15->1 100 3.04 0.3,
+                15->39 80 9.37 0.3,
+                21->1 100 0.62 0.3,
+                21->39 100 14.81 0.3
+            ];
+
+            // If true, print allocation info on the application console. This is useful to 
+            // help identify problems in the transition rates and probability maps. 
+            @alias = print transition info?
+            printTransitionInfo := BooleanValue .yes;
+
+            // Calculate the quantity of changes to be executed. 
+            @collapsed = yes
+            _ := Group .none {{
+                transitionRates := CalcChangeMatrix landscape transitionMatrix;
+
+                @alias = split transition rates
+                modulatedChanges complementaryChanges := ModulateChangeMatrix transitionRates percentOfTransitionsByExpansion;
+            }};
+
+            // Execute the transition functions. 
+            @collapsed = yes
+            _ := Group .none {{
+                @collapsed = yes
+                LogPolicy .info printTransitionInfo {{
+                    @alias = landscape expander
+                    changedLandscape corrodedProbabilities remainingChanges := Expander {
+                        landscape = landscape,
+                        probabilities = probabilities,
+                        changes = modulatedChanges,
+                        transitionParameters = patchExpansionParameters,
+                        neighborWindowLines = 3,
+                        neighborWindowColumns = 3,
+                        pruneFactor = 10
+                    };
+                }};
+
+                combinedTransitionRates := AddChangeMatrix complementaryChanges remainingChanges;
+
+                @collapsed = yes
+                LogPolicy .info printTransitionInfo {{
+                    landscapePatcher _ _ := Patcher {
+                        landscape = changedLandscape,
+                        probabilities = corrodedProbabilities,
+                        changes = combinedTransitionRates,
+                        transitionParameters = patchGenerationParameters,
+                        neighborWindowLines = 3,
+                        neighborWindowColumns = 3,
+                        pruneFactor = 10
+                    };
+                }};
+            }};
+
+            // The landscape map resulting from the transition allocation. 
+            resultingLandscape := CategoricalMap landscapePatcher;
+        }};
+
+        // Salva o mapa de probabilidades das transições 
+        SaveMap {
+            map = probabilidades,
+            filename = "/content/gdrive/MyDrive/modelo/Regiao_3/probabilities_tnc2_3_.tif",
+            suffixDigits = 2,
+            step = step,
+            useCompression = .yes,
+            workdir = .none,
+            ignoreCostlySparseCategories = .yes
+        };
+
+        // Salvar o mapa final 
+        SaveMap {
+            map = resultingLandscape,
+            filename = "/content/gdrive/MyDrive/modelo/Regiao_3/landscape_tnc2_3_.tif",
+            suffixDigits = 2,
+            step = step,
+            useCompression = .yes,
+            workdir = .none,
+            ignoreCostlySparseCategories = .yes
+        };
+    }};
+}};
