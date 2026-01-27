@@ -1,4 +1,4 @@
-//For run in Google Earth Engine
+//To run in Google Earth Engine
 //RUN FOR THE YEARS THAT YOU WANT (YEAR BY YEAR)
 
 // Define the study area geometry
