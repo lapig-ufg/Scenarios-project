@@ -9,12 +9,9 @@
 
 <h2 align="left">Sumary</h2>
 
-1. [Introduction](#introduction)
-2. [Objectives](#objectives)
-3. [Workflow](#workflow)
-4. [Results](#results)
-5. [Acknowledgments](#ack)
-6. [References](#references)
+- [Introduction ](#introduction-)
+- [Workflow](#workflow)
+- [Acknowledgements](#acknowledgements)
 
 
 ***
@@ -41,4 +38,5 @@ This repository contains the (following <a name= "following"></a>):
     <p><i>Figura 2: Dinamica EGO process.</i></p>
 </div>
 
-
+## Acknowledgements
+This research was supported by LaMCAD/UFG.
