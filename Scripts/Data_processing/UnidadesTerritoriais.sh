@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "Starting processing..."
-
 ## A well-defined vector file is required to run the code
 ## Rasterize the data (requires a vector with an attribute field containing the value 1)
 gdal_rasterize -l quilombos \

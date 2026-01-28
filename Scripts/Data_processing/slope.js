@@ -1,6 +1,6 @@
 //For run in Google Earth Engine 
 
-// Define the study area geometry
+// Define the study area geometry (exemple area)
 var ae = ee.Geometry.Polygon([
   [
     [-54.337, -25.344],

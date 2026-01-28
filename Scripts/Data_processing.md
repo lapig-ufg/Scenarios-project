@@ -1,41 +1,72 @@
+[//]: #(Introducao)
 <h2 align="center">Processamento Inicial</h2>
-
 <div align="justify"> 
     Todas as variáveis foram processadas para que tivessem a mesma resolução espacial e estivessem projetadas no mesmo sistema de coordenadas. A resolução escolhida foi de 30 metros por célula, de modo que os padrões pudessem ser melhor percebidos nas análises. A projeção adotada foi a Albers para a América do Sul (ESRI:102033), por se tratar de uma projeção que preserva a área e apresenta baixa distorção em comparação a outras projeções. 
 </div>
 
+[//]:#(processamento_padrao)
 <br>
-
 <div align="justify">
     Maior parte das variáveis utilizou os mesmos métodos para processamento, sendo esse o script de <a href="Data_processing/merge_clip_resample_reproject.sh">procedimento de processamento padrão </a> que une as cenas separadas dos arquivos (dados grandes), recorta, reprojeta e deixa todos os pixels com resolução espacial cravada em 30 metros e ajusta um modo de visualização do dado em programas gis.
 </div>
 
+[//]:#(aquisicao_dados_online)
 <br>
-
 <div align="justify">
     Para os dados que houvesse necessidade de baixar direto como links, como uso e cobertura e Global 30-m Annual Median Vegetation Height o script de <a href="Data_processing/Processo_aquisicao_dados_online.sh">procedimento de aquisição de dados online </a> que faz o download dos dados e então é passado novamente para o script de <a href="Data_processing/merge_clip_resample_reproject.sh">procedimento de processamento padrão </a> 
 </div>
 
+[//]:#(reclass)
 <br>
-
 <div align="justify">
-    Quando os dados precisavam de correção de valor sem dados e de reclassificação de valores o script de <a href="Data_processing/gdal_reclass_nodata.sh">reclassificação de nodata</a>.
+    Quando os dados precisam de correção de valor sem dados e de reclassificação:
+    <ul>
+        <li><b>1- </b> De valores o script de <a href="Data_processing/gdal_reclass_nodata.sh">reclassificação de nodata</a>.</li>
+        <li><b>2-</b> Para simplificar a classificação feita pelo mapbiomas (coleção 9) usar o código de <a href="Data_processing/reclassificar_mapbiomas.sh">reclassificação dados mapbiomas</a> .</li>
+        <li><b>3-</b> Para dados de biomassa foi utilizado o script de <a href="Data_processing\reclassification_values_biomass_vigor.sh">reclassificação de ranges de biomassa</a></li>
+        </li>
+    </ul>    
+</div>
+
+[//]:#(deforestation_age)
+<br>
+<div align="justify">
+    A camada de idade do desmatamento foi gerada usando os dados do mapbiomas de 1985 a 2023 usando o script de <a href="Data_processing\IdadeDesmatamentoLULC.ipynb">calcular idade de desmatamento</a> feito no ambiente do google colab.
+</div>
+
+[//]:#(pasture_age)
+<br>
+<div align="justify">
+    A camada de idade de idade da pastagem foi adquirida dos dados pre processados usando o script de <a href="Data_processing/pasture_age.js">idade da pastagem</a> feito no ambiente do google earth engine.
+</div>
+
+[//]:#(rasterizar)
+<br>
+<div align="justify">
+    Em casos de dados vetoriais que necessitavam de conversão para raster, foi usando o script de <a href="Data_processing/rasterizar_vetores.sh"> de rasterizar vetores</a> feito no ambiente do google earth engine.
+</div>
+
+[//]:#(ut_process)
+<br>
+<div align="justify">
+    No processamento da camada de unidade territorial foi realizada a junção de 4 camadas de dadods vetoriais que foram processadas tendo valor único em um dos campos para rasterizar, e os dados foram novamente redimensionados usando o script de <a href="Data_processing/UnidadesTerritoriais.sh"> de união e reprojeção </a> dos dados.
+</div>
+
+[//]:#(slope)
+<br>
+<div align="justify">
+    No processamento da camada de declividade, foi necessário utilizar dentro do google earth engine os dados do  Modelo Digitam de Elevação (DEM) da Nasa que é um reprocessamento dos dados do SRTM melhorados com os dados do ASTER GDEM, ICESat e PRISM usando o script de <a href="Data_processing/slope.js"> de calculo de declividade</a>.
 </div>
 
 <br>
-
-<br>
-
-
 <h2 align="justify"> Dicionário de Variáveis e Metadados </h2>
-
 <div align="justify">
     A seguinte tabela contém a relação de todas as variáveis utilizadas no processamento, seus tipos de dados e links para download no Google Drive.
 </div>
-
 <br>
-
 <div align="center">
+
+[//]:#(table)
 
 | Variável | Tipo de Dado | NoData | Arquivo (Link do Drive) |
 | :---: | :---: | :---: | :---: |
@@ -74,9 +105,7 @@
 | Vigor 2018 | int8 | 0 | [pastagem_EVI_normalizado_30_2018_entrada_final.tif](https://drive.google.com/file/d/114AsSj_YKjlN2saVRcOkj80YCGt4MfXf/view?usp=drive_link) |
 | Vigor 2023 | int8 | 0 | [pastagem_EVI_normalizado_30_2023_entrada_final.tif](https://drive.google.com/file/d/1bnSU_VGtmJRuY-OkeoUd6nNZoow5Z6Y3/view?usp=drive_link) |
 </div>
-
 <br>
-
 <div align="center">
 Controle de dados de saída e gabarito de parametros (No Data/ Formato de dados).
 </div>
