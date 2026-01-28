@@ -18,7 +18,18 @@
 ## Introduction <a name="introduction"></a>
 
 <div align="justify">
-    The project’s central objective was to model scenarios of agricultural intensification and remnant conservation, simulating future deforestation in the Amazon, Cerrado, and Pantanal biomes as a function of pasture and soy expansion. Additionally, the analysis of avoided deforestation was a key goal for understanding the dynamics driving land-use transitions. This project is a joint initiative between the Image Processing and Geoprocessing Laboratory (LAPIG–UFG) and The Nature Conservancy.
+    The project’s central objective is to model scenarios of Brazil's agricultural intensification and remnant conservation, simulating future deforestation in the Amazon, Cerrado, and Pantanal biomes as a function of pasture and soy expansion. Additionally, the analysis of avoided deforestation is a key component for understanding the dynamics driving land-use transitions. This project is a joint initiative between the Image Processing and Geoprocessing Laboratory (LAPIG–UFG) and The Nature Conservancy.
+
+Scenarios
+
+a) Inertial Governance (Business-as-Usual – BAU):
+Projects future land-use trajectories under the continuation of current environmental governance and enforcement levels, in which legal protection instruments coexist with implementation gaps and persistent environmental liabilities in Legal Reserves (RLs) and Permanent Preservation Areas (APPs), allowing for ongoing deforestation and land-use change within both legal and illegal margins.
+
+b) Private Governance and Controlled Expansion (TNC-1):
+Assumes the presence of a spatial control mechanism, potentially private (e.g., DCF), that restricts direct conversion of native vegetation and strengthens the protection of APPs and RLs, assessing whether spatial containment alone can alter vegetation loss trajectories.
+
+c) Pasture Intensification and Optimization (TNC-2):
+Maintains the configuration of TNC-1 while adding potential productivity gains from livestock intensification, thereby reducing the demand for new pasture areas. This scenario does not assume automatic regeneration, but evaluates how the combination of strengthened governance and improved productive efficiency can shift land-use conversion trajectories.
 </div>
 
 <br> 
