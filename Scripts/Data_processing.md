@@ -24,10 +24,6 @@
 
 <br>
 
-<div align="justify">
-    Quando os dados precisavam de correção de valor sem dados e de reclassificação de valores o script de <a href="Data_processing/gdal_reclass_nodata.sh">reclassificação de nodata</a>.
-</div>
-
 <br>
 
 
