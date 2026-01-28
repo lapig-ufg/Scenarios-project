@@ -1,4 +1,4 @@
-<h2 align="center"> Scenarios_Project / Projeto_CENARIOS</h2>
+<h2 align="center"> Scenarios_Project / Projeto_Cenários</h2>
 
 <div align="center">
     <img src="Figures/proj_cenarios_v2.png" width="80%" alt="Processo de Operacionalização">
