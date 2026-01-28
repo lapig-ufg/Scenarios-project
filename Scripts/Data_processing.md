@@ -1,7 +1,7 @@
 <h2 align="center">Processamento Inicial</h2>
 
 <div align="justify"> 
-    Todas as variáveis foram processadas para que tivessem a mesma resolução espacial e estivessem projetadas no mesmo sistema de coordenadas. A resolução escolhida foi de 30 metros por célula, de modo que os padrões pudessem ser melhor percebidos nas análises. A projeção adotada foi a Albers para a América do Sul (ESRI:102033), por se tratar de uma projeção que preserva a área e apresenta baixa distorção em comparação a outras projeções (Kimerling et al., 1995). 
+    Todas as variáveis foram processadas para que tivessem a mesma resolução espacial e estivessem projetadas no mesmo sistema de coordenadas. A resolução escolhida foi de 30 metros por célula, de modo que os padrões pudessem ser melhor percebidos nas análises. A projeção adotada foi a Albers para a América do Sul (ESRI:102033), por se tratar de uma projeção que preserva a área e apresenta baixa distorção em comparação a outras projeções. 
 </div>
 
 <br>
