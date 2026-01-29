@@ -1,7 +1,7 @@
 <h2 align="center">Regionalization Methodology</h2>
 
 <div align="center">
-    <img src="../Docs/Figures/Infographic_Spatial_Regionalization_Process.png" width="150%" alt="Processo de Operacionalização">
+    <img src="../Docs/Figures/Infographic_Spatial_Regionalization_Process.png" width="150%" alt="">
     <p><i> Spatial regionalization process.</i></p>
 </div>
 
