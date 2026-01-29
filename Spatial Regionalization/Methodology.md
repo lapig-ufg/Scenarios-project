@@ -1,6 +1,9 @@
 <h2 align="center">Regionalization Methodology</h2>
 
-![alt text](../Figures/Infografico.png)
+<div align="center">
+    <img src="../Docs/Figures/Infographic_Spatial_Regionalization_Process.png" width="150%" alt="Processo de Operacionalização">
+    <p><i> Spatial regionalization process.</i></p>
+</div>
 
 A data-driven regionalization was developed to represent land-use and land-cover (LULC) transitions across the Amazon, Cerrado, and Pantanal biomes. Instead of administrative boundaries, regions were defined based on current land-use patterns and transition dynamics.
 
