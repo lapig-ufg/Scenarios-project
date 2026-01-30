@@ -2,11 +2,11 @@
 set -euo pipefail
 
 # =========================
-# Arquivos e pastas
+# Files and folders
 # =========================
 BASE="/home/alessandrabertassoni/Calc_excedentes"
 OUT="${BASE}/out_hexstats"
-GRID="/home/alessandrabertassoni/AMZCERPAN.gpkg" #Poligono da reg=ião de interesse em hexágonos
+GRID="/home/alessandrabertassoni/AMZCERPAN.gpkg" # Hex grid of study region
 LAYER="grade_area_interesse"
 ID="FID_biomas"
 
@@ -22,7 +22,7 @@ HEXID="${OUT}/hexid_30m.tif"
 mkdir -p "${OUT}"
 
 # =========================
-# 1) Rasteriza hexágonos (30 m)
+# 1) Rasterize hex grid (30 m)
 # =========================
 singularity exec "${GDAL}" gdal_rasterize \
   -l "${LAYER}" \
@@ -35,7 +35,7 @@ singularity exec "${GDAL}" gdal_rasterize \
   "${GRID}" "${HEXID}"
 
 # =========================
-# 2) Estatística por bioma brasileiro (pixels → área → %)
+# 2) Calculate hex statistics (pixels → area → %)
 # =========================
 singularity exec "${PANGEO}" python <<'PY'
 import os, numpy as np, pandas as pd, rasterio, geopandas as gpd
@@ -60,6 +60,7 @@ PIX_M2=30*30
 PIX_KM2=PIX_M2/1e6
 
 def stats(hexid, scen):
+    # Open raster and hex ID, align grids
     with rasterio.open(scen) as rs, rasterio.open(hexid) as hsrc:
         hid=WarpedVRT(hsrc, crs=rs.crs, transform=rs.transform,
                       width=rs.width, height=rs.height,
@@ -77,6 +78,7 @@ def stats(hexid, scen):
             ids_m=ids[m]
             px_tot+=np.bincount(ids_m, minlength=max_id+1)
             px_exc+=np.bincount(ids_m, weights=(val[m]>0), minlength=max_id+1)
+    # Convert pixels to km²
     df=pd.DataFrame({
         ID: np.arange(1,max_id+1),
         "px_total": px_tot[1:],
@@ -87,8 +89,10 @@ def stats(hexid, scen):
     df["exced_pct_totalhex"]=(df.px_exced/df.px_total*100).clip(0,100)
     return df
 
+# Load hex grid
 gdf=gpd.read_file(GRID, layer=LAYER)[[ID,"geometry"]]
 
+# Calculate statistics for all scenarios
 for name,scen in SCENARIOS.items():
     df=stats(HEXID,scen)
     out=gdf.merge(df,on=ID,how="left").fillna(0)
@@ -96,4 +100,4 @@ for name,scen in SCENARIOS.items():
     out.drop(columns="geometry").to_csv(f"{OUT}/{name}_hexstats.csv",index=False)
     out.to_file(f"{OUT}/hexstats_all.gpkg", layer=f"hexstats_{name}", driver="GPKG")
     print(f"OK {name}")
-PY
+PY  

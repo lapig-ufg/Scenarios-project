@@ -1,41 +1,34 @@
-#
-# Dados Antrópicos
+# Anthropogenic Data
 
-<br>
+| Variable | Description | Year | Source |
+| :---: | :--- | :---: | :---: |
+| Distance to Paved Federal and State Roads | Vector reprojected to Albers; clipped to the area of interest; vector rasterized; resampled to 30 m; Euclidean distance calculated. | 2021, 2022 | [DNIT](https://servicos.dnit.gov.br/vgeo/) |
+| Unpaved Roads | Vector reprojected to Albers; clipped to the area of interest; vector rasterized; resampled to 30 m; Euclidean distance calculated. | 2023 | [IBGE](https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2023/shapefile/) |
+| Distance to Railways | Vector reprojected to Albers; clipped to the area of interest; vector rasterized; resampled to 30 m; Euclidean distance calculated. | 2020 | [DNIT](https://servicos.dnit.gov.br/vgeo/) |
+| Distance to Navigable Waterways | Vector reprojected to Albers; clipped to the area of interest; vector rasterized; resampled to 30 m; Euclidean distance calculated. | 2022 | [DNIT](https://servicos.dnit.gov.br/vgeo/) |
+| Distanced to Warehouses | Vector reprojected to Albers; clipped to the area of interest; vector rasterized; resampled to 30 m; Euclidean distance calculated. | 2024 | [MapBiomas](https://brasil.mapbiomas.org/dados-de-infraestrutura/) |
+| Distance to Slaughterhouses | Vector reprojected to Albers; clipped to the area of interest; vector rasterized; resampled to 30 m; Euclidean distance calculated. | 2021 | ABIEC, IMAZON, GISMAPS, IMAFLORA and [ABRAFRIGO](https://www.abrafrigo.com.br/index.php/links-uteis/) |
+| Population Density | Raw gridded vector data were merged, clipped to the area of interest, and converted to raster format. Subsequently, rasters were reprojected, resampled, and aligned with the other layers. | 2010 | [IBGE](https://www.ibge.gov.br/geociencias/downloads-geociencias.html) |
+| Deforestation Age | Land use and land cover data of natural areas from the full historical series of MapBiomas Collection 9 were processed to identify the year of deforestation. The result was reprojected and resampled to 30 m resolution. | 2024 | [MapBiomas](https://brasil.mapbiomas.org/dados-de-infraestrutura/) |
+| 2023 Pasture Age | Raster obtained from MapBiomas Collection 9 (pre-processed). The data were clipped, reprojected, and resampled to 30 m resolution. | 2023 | [MapBiomas](https://brasil.mapbiomas.org/dados-de-infraestrutura/) |
+| 2023 Pasture Vigor | Raw MODIS-EVI data were reclassified into three classes: low vigor (1), moderate vigor (2), and high vigor (3). The raster was then reprojected, resampled, and aligned with the other layers. | 2023 | [LAPIG/MapBiomas](https://brasil.mapbiomas.org/wp-content/uploads/sites/4/2024/08/ATBD-Collection-9-v2.docx-1.pdf) |
+| Soybean Suitability | Areas with potential for soybean cultivation were filtered; clipped to the study area; reclassified into moderate, good, and very good suitability classes; reprojected to Albers and resampled to 30 m. | — | [IBGE](https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/35693-publicacao-inedita-do-ibge-mostra-elevado-potencial-natural-para-a-agricultura-no-pais) |
+| Property Size (SNCR) | Two vector datasets were merged and reclassified into four property size classes (smallholding, small, medium, and large). The data were rasterized, reprojected, resampled, and aligned with the other layers. | — | [INCRA](https://www.gov.br/incra/pt-br) |
+| Property Size (SIGEF) | Two vector datasets were merged and reclassified into four property size classes (smallholding, small, medium, and large). The data were rasterized, reprojected, resampled, and aligned with the other layers. | — | [INCRA](https://www.gov.br/incra/pt-br) |
+| Permanent Preservation Area (Área de Preservação Ambiental - APP) | The vector dataset was divided into APP and Legal Reserve layers. Both were clipped to the study area, rasterized, reprojected, resampled, and aligned with the other layers. | — | [SICAR](https://car.gov.br/#/) |
+| Territorial Unit | Vector data were categorized into public lands (1), private lands (2), settlement areas (3), and quilombola communities (4). The data were rasterized, merged, reprojected, resampled, and aligned with the other layers. | 2022, 2025 | [MMA and INCRA](https://brasil.mapbiomas.org/tabela-de-camadas/) |
+| Indigenous Land | Vector data were reprojected to Albers, rasterized, resampled to 30 m resolution, and clipped to include only areas within the study region. | 2025 | [FUNAI](https://brasil.mapbiomas.org/tabela-de-camadas/) |
+| Brazilian Forest Code | Vectors of biomes, Brazilian states, and RADAM vegetation physiognomies were overlaid. The resulting classification was defined as 0% (class 1), 20% (class 2), 30% (class 3), 35% (class 4), 50% (class 5), and 80% (class 6). The layer was reprojected to Albers and resampled to 30 m. | 2023 | [IBGE](https://www.ibge.gov.br/geociencias/downloads-geociencias.html) |
 
-| Dado | Descrição |Ano| Fonte |
-| :---: | :--- |:---:| :---: |
-| Distância de Estradas Pavimentadas | Vetor reprojetado para Albers; Recorte para a área de interesse; Rasterização do vetor; Mudança de resolução para 30m; Cálculo de distância euclidiana. |2021, 2022| [DNIT](https://servicos.dnit.gov.br/vgeo/) |
-| Distância de Estradas Vicinais | Vetor reprojetado para Albers; Recorte para a área de interesse; Rasterização do vetor; Mudança de resolução para 30m; Cálculo de distância euclidiana. |2023| [IBGE](https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2023/shapefile/) |
-| Distância de ferrovias | Vetor reprojetado para Albers; Recorte para a área de interesse; Rasterização do vetor; Mudança de resolução para 30m; Cálculo de distância euclidiana. |2020| [DNIT](https://servicos.dnit.gov.br/vgeo/) |
-| Distância de Hidrovias | Vetor reprojetado para Albers; Recorte para a área de interesse; Rasterização do vetor; Mudança de resolução para 30m; Cálculo de distância euclidiana. |2022| [DNIT](https://servicos.dnit.gov.br/vgeo/) |
-| Distância de Silos | Vetor reprojetado para Albers; Recorte para a área de interesse; Rasterização do vetor; Mudança de resolução para 30m; Cálculo de distância euclidiana. |2024| [MapBiomas](https://brasil.mapbiomas.org/dados-de-infraestrutura/) |
-| Distância de Frigoríficos | Vetor reprojetado para Albers; Recorte para a área de interesse; Rasterização do vetor; Mudança de resolução para 30m; Cálculo de distância euclidiana. |2021,| ABIEC, IMAZON, GISMAPS, IMAFLORA e [ABRAFRIGO](https://www.abrafrigo.com.br/index.php/links-uteis/) |
-| Densidade Populacional | A partir dos dados vetoriais brutos em grade, foi realizada a junção dos arquivos, seguida do recorte para a área de interesse e da conversão para o formato raster. Posteriormente, os arquivos foram reprojetados, redimensionados e alinhados com os demais rasters. |2010| [IBGE](https://www.ibge.gov.br/geociencias/downloads-geociencias.html) |
-| Idade do Desmatamento | Processados dados de uso e cobertura de áreas naturais de toda a série histórica do Mapbiomas coleção 9, para identificar o ano de desmatamento. O resultado foi reprojetado e teve sua resolução espacial redimensionada para 30 metros. |2024| [MapBiomas](https://brasil.mapbiomas.org/dados-de-infraestrutura/) |
-| Idade da Pastagem | Raster adquirido do Mapbiomas coleção 9 já processados. Foi então realizado recorte, reprojetado e sua resolução espacial foi redimensionada para 30 metros quadrados. |2023| [MapBiomas](https://brasil.mapbiomas.org/dados-de-infraestrutura/) |
-| Vigor da Pastagem | Os dados brutos (MODIS-EVI) foram reclassificados em três classes, de 1 a 3, correspondendo a baixo vigor (1), vigor moderado (2) e alto vigor (3). Em seguida, o dado foi reprojetado, redimensionado e alinhado com os demais. |2023| [LAPIG/MapBiomas](https://brasil.mapbiomas.org/wp-content/uploads/sites/4/2024/08/ATBD-Collection-9-v2.docx-1.pdf); |
-| Aptidão para soja | Filtragem das áreas com potencial para o cultivo de soja; recorte para a área de estudo; reclassificação das classes conforme o grau de potencialidade, sendo elas: moderada, boa e muito boa; Redimensionado para 30m e reprojetado para Albers. || [IBGE](https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/35693-publicacao-inedita-do-ibge-mostra-elevado-potencial-natural-para-a-agricultura-no-pais) |
-| Sistema Nacional de Cadastro Rural - SNCR | As duas bases vetoriais foram unidas possuindo o mesmo valor, então reclassificadas pelo tamanho da propriedade em 4 classes (minifúndio, pequena, média e grande propriedade). Os dados são rasterizados, reprojetados, redimensionados e em seguida alinhados com os outros. || [INCRA](https://www.gov.br/incra/pt-br) |
-| Sistema de Gestão Fundiária - SIGEF | As duas bases vetoriais foram unidas possuindo o mesmo valor, então reclassificadas pelo tamanho da propriedade em 4 classes (minifúndio, pequena, média e grande propriedade). Os dados são rasterizados, reprojetados, redimensionados e em seguida alinhados com os outros. || [INCRA](https://www.gov.br/incra/pt-br) |
-| Cadastro Ambiental Rural - CAR | A base vetorial foi separada em duas, sendo de APP e RL. Ambas foram recortadas somente as que estavam dentro da área de estudo. Em seguida, rasterizados, reprojetados, redimensionados e em seguida alinhados com os outros. || [SICAR](https://car.gov.br/#/) |
-| Unidades Territoriais | Compreende a categorização dos vetores em: áreas públicas (1), áreas privadas (2), áreas de assentamentos (3) e áreas de comunidades quilombolas (4). Os dados foram rasterizados e unidos, reprojetados, redimensionados e alinhados com os demais. |2022, 2025| [MMA e INCRA](https://brasil.mapbiomas.org/tabela-de-camadas/) |
-| Terras Indígenas | A base vetorial foi reprojetado para o sistema Albers, rasterizado, redimensionado para 30 metros de resolução e recortado, considerando apenas as terras localizadas dentro da área de interesse. |2025|[FUNAI](https://brasil.mapbiomas.org/tabela-de-camadas/) |
-| Aplicação do Código Florestal | Foi realizada a sobreposição dos vetores dos biomas, dos estados brasileiros e das fitofisionomias do Projeto Radar da Amazônia (RADAM). A nova classificação foi definida da seguinte forma: 0% (classe 1), 20% (classe 2), 30% (classe 3), 35% (classe 4), 50% (classe 5) e 80% (classe 6). Após a reclassificação, foi feito o reprojetamento para o sistema Albers e o redimensionamento para 30 metros. |2023| [IBGE](https://www.ibge.gov.br/geociencias/downloads-geociencias.html) |
+---
 
+# Natural Data
 
-<br>
-
-#
-# Dados Naturais
-
-<br>
-
-| Dado | Descrição |Ano| Fonte |
-| :---: | :--- |:---:|:---: |
-| Unidades de Conservação | Os vetores foram separados em Unidades de Conservação de Proteção Integral e de Uso Sustentável. Cada um deles foi reprojetado para o sistema Albers, rasterizado, redimensionado para 30 metros de resolução e recortado, considerando apenas as áreas localizadas dentro da área de interesse. |2025| [MMA](https://brasil.mapbiomas.org/tabela-de-camadas/) |
-| Distância de Rios | Vetor de drenagem da ANA reprojetado para Albers; Recorte para a área de interesse; Rasterização do vetor; Mudança de resolução para 30m; Cálculo de distância euclidiana. |2017| [SNIRH](https://metadados.snirh.gov.br/geonetwork/srv/por/catalog.search#/home) |
-| Precipitação no trimestre mais quente | Adquirida na resolução de 30 arc seconds (~1 km), a camada foi recortada para a área de interesse, reprojetado para Albers, redimensionada para 30 metros, e alinhada com os demais rasters. |2021| [Chelsa](https://www.chelsa-climate.org/) |
-| Global 30-m Annual Median Vegetation Height (ShortVeg)| Rasters adquiridos diretamente com os autores dos dados. Os dados foram recortados, reprojetados, redimensionados e alinhados com os demais rasters. |2023| [LAPIG/GPW](https://www.researchsquare.com/article/rs-6521333/v1) |
-| Relevo | Raster gerado pelas cenas do Alos Palsar disponíveis no ASF Data Search com resolução espacial de 12,5 metros. Após unir as cenas o dado foi reprojetado, redimensionado para 30 metros e alinhado com os demais rasters. |2015| [ASF Data Search](https://search.asf.alaska.edu/#/) |
-| Declividade | Raster processado em porcentagem no Google Earth Engine (GEE) utilizando o modelo para 30 metros do modelo digital de elevação da Nasa (NASADEM), posteriormente foi mosaicado, reprojetado, e redimensionado para uma resolução espacial de 30 metros quadrados. |2020| [NASA](https://www.earthdata.nasa.gov/data/catalog/lpcloud-nasadem-hgt-001) |
+| Variable | Description | Year | Source |
+| :---: | :--- | :---: | :---: |
+| Strictly Protected Area | Protected Area vectors were separated into Strict Protection and Sustainable Use categories. Each dataset was reprojected to Albers, rasterized, resampled to 30 m resolution, and clipped to the study area. | 2025 | [MMA](https://brasil.mapbiomas.org/tabela-de-camadas/) |
+| Distance to Rivers | ANA drainage vector reprojected to Albers; clipped to the area of interest; rasterized; resampled to 30 m; Euclidean distance calculated. | 2017 | [SNIRH](https://metadados.snirh.gov.br/geonetwork/srv/por/catalog.search#/home) |
+| Precipitation | Originally acquired at 30 arc-second resolution (~1 km). The layer was clipped to the study area, reprojected to Albers, resampled to 30 m resolution, and aligned with the other rasters. | 2021 | [Chelsa](https://www.chelsa-climate.org/) |
+| Global 30-m Annual Median Vegetation Height (ShortVeg) | Rasters obtained directly from the data authors. The data were clipped, reprojected, resampled, and aligned with the other rasters. | 2023 | [LAPIG/GPW](https://www.researchsquare.com/article/rs-6521333/v1) |
+| Relief | Raster generated from ALOS PALSAR scenes available via ASF Data Search with 12.5 m spatial resolution. After mosaicking, the data were reprojected, resampled to 30 m, and aligned with the other rasters. | 2015 | [ASF Data Search](https://search.asf.alaska.edu/#/) |
+| Slope | Raster processed as percent slope in Google Earth Engine (GEE) using the 30 m NASADEM digital elevation model. The data were mosaicked, reprojected, and resampled to 30 m resolution. | 2020 | [NASA](https://www.earthdata.nasa.gov/data/catalog/lpcloud-nasadem-hgt-001) |

@@ -1,4 +1,4 @@
-# Mapa de distancia silos -------------------------------------------------
+# Silos Distance Map -----------------------------------------------------
 
 library(rgee)
 library(reticulate)
@@ -9,29 +9,33 @@ install.packages("landscapemetrics")
 library(landscapemetrics)
 library(purrr)
 
-biomas = vect('./Dados/Biomas_IBGE_AMZ_CER_PAN_Albers.shp')
-plot(biomas)
+# Load biome polygons
+biomes = vect('./Data/Biomes_IBGE_AMZ_CER_PAN_Albers.shp')
+plot(biomes)
 
-mask=rast("./Dados/bio13_cut.tif")
+# Load mask raster
+mask = rast("./Data/bio13_cut.tif")
 
-silos = vect('./Dados/SilosPAC/SilosPAC.shp')
+# Load silos points
+silos = vect('./Data/SilosPAC/SilosPAC.shp')
 plot(silos)
 
-# Criar um raster vazio com extensão e resolução
-raster_base <- rast(ext(biomas), resolution = 30)  # resolução de 100 metros, por exemplo
+# Create an empty raster with the extent and resolution of the biomes
+raster_base <- rast(ext(biomes), resolution = 30)  # resolution 30 meters
 
-# Calcula a distância euclidiana de cada célula até o silo mais próximo
+# Compute Euclidean distance from each cell to the nearest silo
 dist_raster <- distance(raster_base, silos)
 
-crs(raster_base) <- crs(biomas)
+crs(raster_base) <- crs(biomes)
 
-dist_silos = distance(biomas_raster, silos)
-x11();plot(dist_raster); plot(silos, add=TRUE)
-ext(dist_raster) <- ext(mask)
-dist1 <- mask(dist_raster, mask)
+# Crop and mask the distance raster to match the mask
+dist_raster <- mask(dist_raster, mask)
 
-writeRaster(dist_raster, "silosdist.tif", overwrite = TRUE, gdal = c("COMPRESS=LZW", "OVERVIEWS=YES"))
+# Save the raster
+writeRaster(dist_raster, "silos_distance.tif", overwrite = TRUE,
+            gdal = c("COMPRESS=LZW", "OVERVIEWS=YES"))
 
+# --- Install required packages ---
 install.packages(c("doParallel", "foreach"))
 install.packages("WGCNA")
 
@@ -39,49 +43,35 @@ library(terra)
 library(sf)
 library(raster)
 
-# --- 1. Abrir os dados vetoriais dos frigoríficos ---
-shp_path <- "./Dados/Frigoríficos_Mario/Frigorificos_AMZCER.shp"
-frigorificos <- st_read(shp_path)
+# --- 1. Load slaughterhouse vector data ---
+shp_path <- "./Data/Slaughterhouses_Mario/Slaughterhouses_AMZCER.shp"
+slaughterhouses <- st_read(shp_path)
 
-# --- 2. Definir a grade base (resolução 30m) ---
-# Use a extensão total da área de interesse (Amazônia, Cerrado, Pantanal)
-biomas <- st_read("./Dados/Biomas_IBGE_AMZ_CER_PAN_Albers.shp")
+# --- 2. Define base raster (30 m resolution) ---
+biomes <- st_read("./Data/Biomes_IBGE_AMZ_CER_PAN_Albers.shp")
+ext <- ext(biomes)
+res <- 30  # meters
 
-ext <- ext(biomas)  # Pode expandir se quiser
-res <- 30  # metros
+r_base <- rast(extent = ext, resolution = res, crs = st_crs(slaughterhouses)$wkt)
 
-# Criar raster base
-r_base <- rast(extent = ext, resolution = res, crs = st_crs(frigorificos)$wkt)
+# --- 3. Rasterize slaughterhouses (1 where present, NA elsewhere) ---
+slaughterhouses_vect <- vect(slaughterhouses)
+r_pts <- rasterize(slaughterhouses_vect, r_base, field = 1, background = NA)
 
-# --- 3. Rasterizar os frigoríficos ---
-# Criar raster binário com 1 onde há frigorífico
-frigorificos_vect <- vect(frigorificos)  # converter de sf para SpatVector
-r_pts <- rasterize(frigorificos_vect, r_base, field = 1, background = NA)
-
-# --- 4. Calcular a distância em blocos ---
+# --- 4. Compute distances in blocks to manage memory ---
 block_height <- 2000
-nrow_r <- nrow(r_pts)
-blocks <- ceiling(nrow_r / block_height)
-
-# ---- criar raster vazio para saída ---
-filename_out <- "distancia_frigo.tif"
-r_dist_out <- rast(r_base)
-r_dist_out <- writeRaster(r_dist_out, filename_out, overwrite=TRUE)
-
-# --- 4. Configurar blocos para processar ---
-block_height <- 2000  # número de linhas por bloco (ajuste conforme memória)
 n_rows <- nrow(r_pts)
 n_blocks <- ceiling(n_rows / block_height)
 
-# --- 5. Loop para processar cada bloco ---
+r_dist_out <- rast(r_base)
+writeRaster(r_dist_out, "dist_slaughterhouses.tif", overwrite=TRUE)
+
 for (i in 1:n_blocks) {
-  cat("Processando bloco", i, "de", n_blocks, "\n")
-  
-  # Definir intervalo das linhas do bloco
+  cat("Processing block", i, "of", n_blocks, "\n")
   start_row <- (i - 1) * block_height + 1
   end_row <- min(i * block_height, n_rows)
   
-  # Calcular extensão do bloco
+  # Calculate block extent
   res_y <- res(r_pts)[2]
   ymax_global <- ymax(r_pts)
   ymin_block <- ymax_global - end_row * res_y
@@ -89,132 +79,65 @@ for (i in 1:n_blocks) {
   
   ext_block <- ext(xmin(r_pts), xmax(r_pts), ymin_block, ymax_block)
   
-  # Cortar raster para o bloco
   r_block <- crop(r_pts, ext_block)
-  
-  # Calcular distância no bloco
   dist_block <- distance(r_block)
   
-  # Salvar resultado do bloco
-  filename_block <- sprintf("./distancia_bloco_%02d.tif", i)
+  filename_block <- sprintf("./distance_block_%02d.tif", i)
   writeRaster(dist_block, filename_block, overwrite=TRUE)
   
-  # Limpar memória
   rm(r_block, dist_block)
   gc()
 }
 
-# Depois, se quiser, pode juntar assim:
-library(terra)
-
-blocos <- list.files(pattern = "distancia_bloco_\\d+\\.tif$", full.names = TRUE)
+# --- Merge blocks using minimum distance ---
+blocos <- list.files(pattern = "distance_block_\\d+\\.tif$", full.names = TRUE)
 r_list <- lapply(blocos, rast)
 
-distancia_total <- do.call(mosaic, c(r_list, fun = "min"))  # mosaic com mínimo para manter distância
+distance_total <- do.call(mosaic, c(r_list, fun = "min"))
+writeRaster(distance_total, "./distance_slaughterhouses_total.tif", overwrite=TRUE)
 
-writeRaster(distancia_total, "./distancia_frigorificos_total.tif", overwrite=TRUE)
+# Crop/mask final distance raster to deforestation layer
+dist <- rast("distance_slaughterhouses_total.tif")
+bio <- rast("./deforestation_age_85_2023_pyramided.tif")
+dist_crop <- crop(dist, bio)
+dist_mask <- mask(dist_crop, bio)
+ext(dist_mask) <- ext(bio)
 
-dist <- rast("Dist_frigos.tiff")
-bio <- rast("./deforestation_age_85_2023_piramidado.tif")
+x11(); plot(dist_mask)
 
-dist1 <- crop(dist,bio)
-dist2 <- mask(dist1, bio)
-ext(dist1) <- ext(bio)
+# --- Alternative simplified method ---
+shp_path <- "./Data/Slaughterhouses_Mario/Slaughterhouses_AMZCER.shp"
+slaughterhouses <- vect(shp_path)
+biomes <- vect("./Data/Biomes_IBGE_AMZ_CER_PAN_Albers.shp")
 
-x11();plot(dist1)
+r_base <- rast(ext(biomes), resolution = 30)
+r_pts <- rasterize(slaughterhouses, r_base, field=1, background=NA)
 
+# Compute complete distance raster
+dist_complete <- distance(r_pts)
+writeRaster(dist_complete, "./distance_slaughterhouses_final.tif", overwrite=TRUE)
+plot(dist_complete)
+plot(biomes, add=TRUE, col="red")
 
-######################################333
-
-library(terra)
-
-# --- 1. Carregar os dados vetoriais ---
-shp_path <- "./Dados/Frigoríficos_Mario/Frigorificos_AMZCER.shp"
-frigorificos <- vect(shp_path)
-
-biomas <- vect("./Dados/Biomas_IBGE_AMZ_CER_PAN_Albers.shp")
-
-# --- 2. Criar raster base ---
-ext_biomas <- ext(biomas)
-res <- 30
-r_base <- rast(ext_biomas, resolution = res))
-
-# --- 3. Rasterizar frigoríficos ---
-r_pts <- rasterize(frigorificos, r_base, field=1, background=NA)
-
-# --- 4. Calcular distância no raster completo ---
-# Esta é a linha chave que muda tudo:
-dist_completa <- distance(r_pts)
-
-# --- 5. Salvar e Plotar o resultado final ---
-writeRaster(dist_completa, "./distancia_frigorificos_final.tif", overwrite=TRUE)
-
-# Opcional: Plotar para visualizar em R
-plot(dist_completa)
-# Você pode adicionar as fronteiras dos biomas por cima para contextualizar
-# plot(biomas, add=TRUE, col="red")
-
-install.packages("rgdal")
-library(raster)
-library(rgdal)
-library(sp)
-library(leaflet)
-
-library(readr)
-silos <- read_delim("silos.txt", 
-                     delim = ";", escape_double = FALSE, trim_ws = TRUE)
-View(silos)
+# --- Load silos table and convert to spatial points ---
+silos <- read_delim("silos.txt", delim=";", escape_double=FALSE, trim_ws=TRUE)
 crs(silos)
-mascara  <- raster("deforestation_age_85_2023_piramidado.tif")
+mask_raster <- raster("deforestation_age_85_2023_pyramided.tif")
 
-plot(silos[c("lon", "lat")])
-
-ghsl_crs <- '+proj=aea +lat_0=-32 +lon_0=-60 +lat_1=-5 +lat_2=-42 +x_0=0 +y_0=0 +ellps=aust_SA +units=m +no_defs'
-
-# Read the hospitals data 
 points <- SpatialPointsDataFrame(coords = silos[c("lon", "lat")], data = silos,
                                  proj4string = CRS("+proj=aea +lat_0=-32 +lon_0=-60 +lat_1=-5 +lat_2=-42 +x_0=0 +y_0=0 +ellps=aust_SA +units=m +no_defs"))
 
-# Transform the CRS
-points <- spTransform(x = points, CRSobj = ghsl_crs)
+# Transform CRS to match raster
+points <- spTransform(points, crs(mask_raster))
+biomes <- spTransform(biomes, crs(mask_raster))
 
-biomas <- shapefile("./Dados/Biomas_IBGE_AMZ_CER_PAN_Albers.shp")
+# Convert to sf and export
+sf_obj <- st_as_sf(biomes)
+st_write(sf_obj, "biomes.shp", delete_layer=TRUE)
 
-x11();plot(biomas);plot(points, add=TRUE, color="red")
-
-library(sp)
-
-# CRS correto para coordenadas em graus decimais (WGS84)
-crs_geo <- CRS("+proj=longlat +datum=WGS84 +no_defs")
-
-# Criar pontos com CRS geográfico
-points <- SpatialPointsDataFrame(coords = silos[c("lon", "lat")], data = silos,
-                                 proj4string = crs_geo)
-library(sf)
-# CRS do raster
-mascara_crs <- crs(mascara)
-
-# Reprojetar pontos
-points <- spTransform(points, mascara_crs)
-
-biomas <- spTransform(biomas, mascara_crs)
-
-
-
-# Converter SpatialPointsDataFrame para sf
-sf_obj <- st_as_sf(biomas)  # spdf é o seu SpatialPointsDataFrame
-
-# Exportar para shapefile
-st_write(sf_obj, "biomas.shp", delete_layer = TRUE)
-
-x11()
-plot(biomas)
-plot(points, add=TRUE, col="red", pch=20)
-
-distances <- distanceFromPoints(object = mascara, xy = points)
-
-
-distance_raster <- mask(x = distances, mask = mascara)
-
-writeRaster(distance_raster, filename = "./distance_raster.tif", overwrite = TRUE,  options = c("COMPRESS=LZW", "TILED=YES", "BIGTIFF=YES"))
+# Final distance raster
+distances <- distanceFromPoints(mask_raster, xy = points)
+distance_raster <- mask(distances, mask_raster)
+writeRaster(distance_raster, "./distance_raster.tif", overwrite=TRUE,
+            options=c("COMPRESS=LZW","TILED=YES","BIGTIFF=YES"))
 plot(distance_raster)

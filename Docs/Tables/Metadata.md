@@ -1,8 +1,7 @@
 # Metadata of Explanatory Variables
 
-This document describes the units and the meaning of raster values for the explanatory variables.
+    This document describes the units and the meaning of raster values for the explanatory variables.
 
-# Metadata of Variables
 
 ## Distance Variables
 

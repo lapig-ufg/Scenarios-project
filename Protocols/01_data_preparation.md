@@ -36,7 +36,7 @@ This script:
 1. Downloads the datasets from online sources
 2. Passes the data to the standard processing workflow
 
-[`**Online acquisition script:** `](Data_processing/Processo_aquisicao_dados_online.sh)
+[`**Online acquisition script:** `](Data_processing/data_acquisition_process.sh)
 
 
 ## Reclassification and NoData Handling
@@ -118,7 +118,7 @@ After individual processing, all raster layers were spatially aligned to ensure:
 This step was necessary to avoid allocation errors in Dinamica EGO.
 
 **Script:**  
-[`Alinhar_raster.ipynb`](Data_processing/Alinhar_raster.ipynb)
+[`Align_rasters.ipynb`](Data_processing/Align_rasters.ipynb)
 
 ---
 

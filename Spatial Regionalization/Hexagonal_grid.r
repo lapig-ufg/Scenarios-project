@@ -1,55 +1,56 @@
 library(sf)
 library(dplyr)
 
-# ====== 1) CAMINHOS  ======
-biomas_shp <- "biomas.shp"   
-out_dir    <- "output"        
+# ====== 1) PATHS ======
+biomas_shp <- "biomas.shp"      # input shapefile of biomes
+out_dir    <- "output"          # output folder
 
 bioma_field <- "bioma"
-biomas_alvo <- c("Amazônia", "Cerrado", "Pantanal")
+target_biomes <- c("Amazon", "Cerrado", "Pantanal")
 
 # SIRGAS 2000 / Brazil Polyconic Albers (ESRI:102033)
 crs_albers <- 102033
 
-# Tamanho do hexágono: 20 km -> 20.000 metros
+# Hexagon size: 20 km -> 20,000 meters
 hex_size_m <- 20000
 
-# ====== 2) LER SHAPEFILE E FILTRAR BIOMAS ======
-biomas <- st_read(biomas_shp, quiet = TRUE)
+# ====== 2) READ SHAPEFILE AND FILTER BIOMES ======
+biomes <- st_read(biomas_shp, quiet = TRUE)
 
-biomas <- st_make_valid(biomas)
+biomes <- st_make_valid(biomes)
 
-# filtra
-regiao <- biomas %>%
-  filter(.data[[bioma_field]] %in% biomas_alvo)
+# Filter target biomes
+region <- biomes %>%
+  filter(.data[[bioma_field]] %in% target_biomes)
 
-# dissolve (vira uma região única)
-regiao <- regiao %>%
+# Dissolve into a single region
+region <- region %>%
   st_union() %>%
   st_as_sf() %>%
   mutate(name = "AMZ_CER_PAN")
 
-# ====== 3) REPROJETAR PARA ALBERS ======
-regiao_albers <- st_transform(regiao, crs_albers)
+# ====== 3) REPROJECT TO ALBERS ======
+region_albers <- st_transform(region, crs_albers)
 
-# ====== 4) CRIAR GRADE HEXAGONAL (20 km) ======
-# st_make_grid: cellsize em unidades do CRS (metros)
+# ====== 4) CREATE HEXAGONAL GRID (20 km) ======
+# st_make_grid: cellsize in CRS units (meters)
 hex_grid <- st_make_grid(
-  regiao_albers,
+  region_albers,
   cellsize = hex_size_m,
-  square = FALSE  # FALSE => hexágonos
+  square = FALSE  # FALSE => hexagons
 )
 
 hex_sf <- st_as_sf(hex_grid) %>%
   mutate(hex_id = row_number())
 
-# ====== 5) CORTE ======
-hex_cut <- st_filter(hex, regiao_albers, .predicate = st_intersects) |>
-  st_intersection(regiao_albers) |>
+# ====== 5) CLIP GRID ======
+hex_cut <- st_filter(hex_sf, region_albers, .predicate = st_intersects) |>
+  st_intersection(region_albers) |>
   st_make_valid()
 
 hex_cut <- hex_cut[!st_is_empty(hex_cut), ]
 
+# ====== 6) EXPORT ======
 st_write(
   hex_cut,
   dsn = file.path(out_dir, "AMZCCERR_albers.shp"),

@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-#Criar resumos hexagonais de rasters binários de "excedente" e escrever um GeoPackage único
-# Input: rasters de excedente para cenários BAU, TNC1, TNC2
-#Output: hexagonal grid vetorial com estatísticas por hexágono
+# Generate hexagonal summaries of binary "surplus" rasters and write a single GeoPackage
+# Input: surplus rasters for scenarios BAU, TNC1, TNC2
+# Output: vector hex grid with per-hex statistics
 
 # --- inputs ---
-BASE="/home/alessandrabertassoni/Calc_excedentes"
+BASE="/home/alessandrabertassoni/Biome_Surplus_Calculation"
 OUT="${BASE}/out_hexstats"
-GRID="/home/alessandrabertassoni/AMZCERPAN.gpkg" # Grid hexagonal vetorial
+GRID="/home/alessandrabertassoni/AMZCERPAN.gpkg" # Vector hexagonal grid
 LAYER="grade_area_interesse"   
-ID="FID_biomas"                        # Identificador único do hexágono
+ID="FID_biomas"                        # Unique hexagon identifier
 
-BAU="${BASE}/bau30_excedentes.tif"
-TNC1="${BASE}/tnc130_excedentes.tif"
-TNC2="${BASE}/tnc230_excedentes.tif"
+BAU="${BASE}/bau30_surplus.tif"
+TNC1="${BASE}/tnc130_surplus.tif"
+TNC2="${BASE}/tnc230_surplus.tif"
 
 # --- containers ---
 GDAL_SIF="/home/alessandrabertassoni/containers/gdal.sif"
@@ -24,9 +24,9 @@ mkdir -p "${OUT}"
 HEXID="${OUT}/hexid_30m.tif"
 GPKG_OUT="${OUT}/hexstats_all.gpkg"
 
-# 1) Rasterizar IDs hexagonais a 30 m (0 = fora do grid)
-#    Usar o grid vetorial original para garantir que todos os hexágonos estão presentes
-#    (mesmo os que não têm excedente em nenhum cenário)
+# 1) Rasterize hex IDs at 30 m (0 = outside grid)
+#    Use the original vector grid to ensure all hexagons are included
+#    (even those with no surplus in any scenario)
 
 singularity exec "${GDAL_SIF}" gdal_rasterize \
   -l "${LAYER}" \
@@ -38,9 +38,9 @@ singularity exec "${GDAL_SIF}" gdal_rasterize \
   -co COMPRESS=DEFLATE -co TILED=YES -co BIGTIFF=YES \
   "${GRID}" "${HEXID}"
 
-# 2) Para cada cenário, alinhar HEXID à grade do cenário (nearest) e contar pixels por hex:
-#    px_total = total de pixels no hex, px_exced = pixels com valor>0 (excedente)
-#    Converter para km² e calcular % = px_exced/px_total*100 (garantindo 0–100)
+# 2) For each scenario, align HEXID to scenario grid (nearest) and count pixels per hex:
+#    px_total = total pixels in hex, px_surplus = pixels with value>0
+#    Convert to km² and calculate % = px_surplus / px_total * 100 (clamped 0–100)
 
 singularity exec "${PANGEO_SIF}" python <<'PY'
 import os
@@ -50,7 +50,7 @@ import rasterio
 from rasterio.vrt import WarpedVRT
 from rasterio.enums import Resampling
 
-BASE="/home/alessandrabertassoni/Calc_excedentes"
+BASE="/home/alessandrabertassoni/Biome_Surplus_Calculation"
 OUT=f"{BASE}/out_hexstats"
 HEXID=f"{OUT}/hexid_30m.tif"
 GPKG_OUT=f"{OUT}/hexstats_all.gpkg"
@@ -60,9 +60,9 @@ LAYER="grade_area_interesse"
 ID="FID_biomas"
 
 SCENARIOS = {
-    "bau":  f"{BASE}/bau30_excedentes.tif",
-    "tnc1": f"{BASE}/tnc130_excedentes.tif",
-    "tnc2": f"{BASE}/tnc230_excedentes.tif",
+    "bau":  f"{BASE}/bau30_surplus.tif",
+    "tnc1": f"{BASE}/tnc130_surplus.tif",
+    "tnc2": f"{BASE}/tnc230_surplus.tif",
 }
 
 PIX_M2  = 30.0 * 30.0
@@ -87,9 +87,9 @@ def zonal_counts(hexid_path, scen_path):
             max_id = max(max_id, int(hid.read(1, window=w).max()))
 
         px_total = np.zeros(max_id + 1, dtype=np.uint64)
-        px_exced = np.zeros(max_id + 1, dtype=np.uint64)
+        px_surplus = np.zeros(max_id + 1, dtype=np.uint64)
 
-        # Count pixels (block-wise)
+        # Count pixels per hex (block-wise)
         for _, w in hid.block_windows(1):
             ids = hid.read(1, window=w).astype(np.int64)
             val = rs.read(1, window=w)
@@ -100,10 +100,10 @@ def zonal_counts(hexid_path, scen_path):
 
             ids_m = ids[m]
             px_total += np.bincount(ids_m, minlength=max_id + 1).astype(np.uint64)
-            px_exced += np.bincount(ids_m, weights=(val[m] > 0), minlength=max_id + 1).astype(np.uint64)
+            px_surplus += np.bincount(ids_m, weights=(val[m] > 0), minlength=max_id + 1).astype(np.uint64)
 
     ids_out = np.arange(1, max_id + 1, dtype=np.int64)
-    return ids_out, px_total[1:], px_exced[1:]
+    return ids_out, px_total[1:], px_surplus[1:]
 
 # Load hex grid geometry once
 gdf = gpd.read_file(GRID, layer=LAYER)[[ID, "geometry"]].copy()
@@ -111,15 +111,15 @@ gdf = gpd.read_file(GRID, layer=LAYER)[[ID, "geometry"]].copy()
 for name, scen in SCENARIOS.items():
     ids_out, tot, exc = zonal_counts(HEXID, scen)
 
-    # Build per-hex table
+    # Build per-hex dataframe
     df = gpd.GeoDataFrame(
         {
             ID: ids_out,
             "px_total": tot,
-            "px_exced": exc,
+            "px_surplus": exc,
             "total_km2_raster": tot * PIX_KM2,
-            "exced_km2": exc * PIX_KM2,
-            "exced_pct_totalhex": np.clip((exc / np.where(tot == 0, 1, tot)) * 100.0, 0, 100),
+            "surplus_km2": exc * PIX_KM2,
+            "surplus_pct_totalhex": np.clip((exc / np.where(tot == 0, 1, tot)) * 100.0, 0, 100),
             "scenario": name,
         }
     )

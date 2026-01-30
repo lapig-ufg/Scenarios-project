@@ -2,46 +2,46 @@ import os
 from qgis.core import QgsVectorLayer
 import processing
 
-# 📍 Caminhos
-pasta_tif = r"E:/Ale_Marisa_Cenarios_TNC/Vraveis_dinamica"
-#Mudando o shapefile de acordo com a região de interesse
+# 📍 Paths
+tif_folder = r"E:/Ale_Marisa_Cenarios_TNC/Vraveis_dinamica"
+# Change the shapefile according to the region of interest
 shapefile = r"E:/Ale_Marisa_Cenarios_TNC/DINAMICA/dados_entrada/Regiao_1/Regiao_1.shp"
 
-# 📍 Verifica shapefile
-vlayer = QgsVectorLayer(shapefile, "regiao", "ogr")
+# 📍 Check shapefile
+vlayer = QgsVectorLayer(shapefile, "region", "ogr")
 if not vlayer.isValid():
-    raise Exception("❌ Shapefile inválido!")
+    raise Exception("❌ Invalid shapefile!")
 
-# 📍 Lista os rasters na pasta
-arquivos_tif = [
-    os.path.join(pasta_tif, f) for f in os.listdir(pasta_tif) if f.endswith(".tif")
+# 📍 List all rasters in the folder
+tif_files = [
+    os.path.join(tif_folder, f) for f in os.listdir(tif_folder) if f.endswith(".tif")
 ]
 
-if not arquivos_tif:
-    raise RuntimeError(f"❌ Nenhum raster .tif encontrado em: {pasta_tif}")
+if not tif_files:
+    raise RuntimeError(f"❌ No .tif raster files found in: {tif_folder}")
 
-for arq in arquivos_tif:
-    print(f"📐 Processando: {os.path.basename(arq)}")
+for file in tif_files:
+    print(f"📐 Processing: {os.path.basename(file)}")
 
-    # Saída: nome com sufixo "_1"
-    cropped = arq.replace(".tif", "_1.tif")
+    # Output: filename with "_1" suffix
+    cropped = file.replace(".tif", "_1.tif")
 
-    # 📍 Passo único: clip com máscara, mantendo NoData e tipo originais
+    # 📍 Single step: clip with mask, keeping original NoData and data type
     processing.run("gdal:cliprasterbymasklayer", {
-        'INPUT': arq,
+        'INPUT': file,
         'MASK': shapefile,
         'SOURCE_CRS': None,
         'TARGET_CRS': None,
-        'NODATA': None,                 # mantém NoData original
+        'NODATA': None,                # keep original NoData
         'ALPHA_BAND': False,
         'CROP_TO_CUTLINE': True,
         'KEEP_RESOLUTION': True,
-        'OPTIONS': 'COMPRESS=LZW',     # compressão
-        'DATA_TYPE': 0,                # mantém tipo original
+        'OPTIONS': 'COMPRESS=LZW',     # compression
+        'DATA_TYPE': 0,                # keep original data type
         'EXTRA': '',
         'OUTPUT': cropped
     })
 
-    print(f"✅ Salvo: {os.path.basename(cropped)}")
+    print(f"✅ Saved: {os.path.basename(cropped)}")
 
-print("🎯 Todos os rasters foram recortados com máscara, mantendo NoData e tipo originais, e comprimidos em LZW.")
+print("🎯 All rasters have been clipped with the mask, keeping original NoData and data type, and compressed with LZW.")

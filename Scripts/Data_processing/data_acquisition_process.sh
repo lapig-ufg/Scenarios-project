@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Processo de aquisicao de dados de short vegetation paralelizado"
+echo "Parallelized short vegetation data acquisition process"
 
 parallel -j3 "
     gdal_translate --config GDAL_HTTP_UNSAFESSL YES \

@@ -3,32 +3,32 @@ library(foreach)
 library(doParallel)
 library(dplyr)
 library(landscapemetrics)
-library(progressr)  # <-- pacote para barra
+library(progressr)  # <-- package for progress bar
 library(progress)
 
-# ---- CONFIGURAÇÃO DO PARALELISMO ----
+# ---- PARALLEL CONFIGURATION ----
 no_cores <- detectCores() - 2
 cl <- makeCluster(no_cores)
 registerDoParallel(cl)
 
-# ---- CONFIGURAÇÃO DA BARRA ----
+# ---- PROGRESS BAR CONFIGURATION ----
 handlers(global = TRUE)
-handlers("progress")   # ou "txtprogressbar", "cli", etc.
+handlers("progress")   # or "txtprogressbar", "cli", etc.
 
-# ---- CARREGAR RASTERS ----
-lulc_2018_path <- "C:\\Users\\Aluno\\Desktop\\Projetos_Cenarios\\AMZCERR_2018_9.tif"
-lulc_2023_path <- "C:\\Users\\Aluno\\Desktop\\Projetos_Cenarios\\AMZCERR_2023_9.tif"
+# ---- LOAD RASTERS ----
+lulc_2018_path <- "C:\\Users\\Student\\Desktop\\Scenario_Projects\\AMZCERR_2018_9.tif"
+lulc_2023_path <- "C:\\Users\\Student\\Desktop\\Scenario_Projects\\AMZCERR_2023_9.tif"
 
 lulc_2018 <- rast(lulc_2018_path)
 lulc_2023 <- rast(lulc_2023_path)
 
-# ---- DEFINIR AS TRANSIÇÕES ----
+# ---- DEFINE TRANSITIONS ----
 transitions <- data.frame(
   from = c(15),
   to   = c(1)
 )
 
-# ---- LOOP EM PARALELO COM BARRA ----
+# ---- PARALLEL LOOP WITH PROGRESS ----
 results <- with_progress({
   p <- progressor(steps = nrow(transitions))
 
@@ -36,28 +36,24 @@ results <- with_progress({
           .combine = rbind,
           .packages = c("terra", "dplyr", "landscapemetrics")) %do% {
 
-    p(sprintf("Processando transição %d de %d", i, nrow(transitions)))
+    p(sprintf("Processing transition %d of %d", i, nrow(transitions)))
 
     from_class <- transitions$from[i]
     to_class   <- transitions$to[i]
 
-    # --- Isolar células que sofreram a transição ---
+    # --- Isolate cells that underwent the transition ---
     trans_cells <- (lulc_2018 == from_class) * (lulc_2023 == to_class)
 
-    # --- Patches inicial e final ---
+    # --- Initial and final patches ---
     to_class_yr1 <- lulc_2018 == to_class
     patches_yr1 <- patches(to_class_yr1, directions = 8, zeroAsNA = TRUE)
     reg9_1_2018patches <- patches_yr1
-    writeRaster(reg9_1_2018patches, "C:\\Users\\Aluno\\Desktop\\Projetos_Cenarios\\reg9_1_2018patches.tif",overwrite=TRUE)
+    writeRaster(reg9_1_2018patches, "C:\\Users\\Student\\Desktop\\Scenario_Projects\\reg9_1_2018patches.tif", overwrite=TRUE)
 
     to_class_yr2 <- lulc_2023 == to_class
     patches_yr2 <- patches(to_class_yr2, directions = 8, zeroAsNA = TRUE)
     reg9_1_2023patches <- patches_yr2
-    writeRaster(reg9_1_2023patches, "C:\\Users\\Aluno\\Desktop\\Projetos_Cenarios\\reg9_1_2023patches.tif", overwrite=TRUE)
-
-    # Final_yr1 <- patches_yr1; Final_yr1[patches_yr1 > 0] <- 1; Final_yr1[is.na(Final_yr1[])] <- 0
-    # Final_yr2 <- patches_yr2; Final_yr2[patches_yr2 > 0] <- 10; Final_yr2[is.na(Final_yr2[])] <- 0
-    # yr1_yr2_patches <- Final_yr1 + Final_yr2
+    writeRaster(reg9_1_2023patches, "C:\\Users\\Student\\Desktop\\Scenario_Projects\\reg9_1_2023patches.tif", overwrite=TRUE)
 
     # --- Expander vs Patcher ---
     expansion_mask <- (patches_yr2 > 0) & (to_class_yr1 > 0)
@@ -65,11 +61,11 @@ results <- with_progress({
     names(patch_class_map) <- c("ID", "is_expander")
     patch_class_map$classification <- ifelse(patch_class_map$is_expander == 1, 1, 0)
     patches_classified <- subst(patches_yr2, patch_class_map$ID, patch_class_map$classification)
-    writeRaster(patches_classified, "C:\\Users\\Aluno\\Desktop\\Projetos_Cenarios\\expander_patcher_9_15_1.tif", overwrite=TRUE)
+    writeRaster(patches_classified, "C:\\Users\\Student\\Desktop\\Scenario_Projects\\expander_patcher_9_15_1.tif", overwrite=TRUE)
 
-    total_trans_cells   <- sum(values(trans_cells), na.rm = TRUE)
+    total_trans_cells    <- sum(values(trans_cells), na.rm = TRUE)
     total_expander_cells <- sum(values(trans_cells * (patches_classified == 1)), na.rm = TRUE)
-    total_patcher_cells <- sum(values(trans_cells * (patches_classified == 0)), na.rm = TRUE)
+    total_patcher_cells  <- sum(values(trans_cells * (patches_classified == 0)), na.rm = TRUE)
 
     if (total_trans_cells > 0) {
       perc_expander <- (total_expander_cells / total_trans_cells) * 100
@@ -79,7 +75,7 @@ results <- with_progress({
       perc_patcher  <- 0
     }
 
-    # --- Métricas de área e forma ---
+    # --- Area and shape metrics ---
     cl.data <- calculate_lsm(
       trans_cells,
       what = c("lsm_c_area_mn", "lsm_c_area_sd", "lsm_p_circle")
@@ -96,7 +92,7 @@ results <- with_progress({
 
 stopCluster(cl)
 
-# Organizar resultados
+# Organize results
 results_df <- as.data.frame(results)
 names(results_df) <- c("From", "To", "MeanPatchArea", "SDPatchArea", "Isometry",
                        "PercExpander", "PercPatcher")
