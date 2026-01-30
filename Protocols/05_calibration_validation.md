@@ -1,6 +1,6 @@
 ## Model Calibration and Validation Protocol
 
-Scripts used:
+### Scripts used:
 
 ⮕ [**`Model Simulation `**](Model_DinamicaEGO/04_Simulation_ExpanderPatcher.egomlx)
 

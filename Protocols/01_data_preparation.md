@@ -166,7 +166,7 @@ The table below summarizes all variables used in the project, including data typ
 | Deforestation Age | int8 | 127 | [deforestation_age_85_2023_entrada_final.tif](https://drive.google.com/file/d/1KDDlqg7jJsSnmnj5Ge-GrzhR6x226UBR/view?usp=drive_link) |
 | 2018 Pasture Age  | int8 | 0 | [IdadePastagem2018_entrada_final.tif](https://drive.google.com/file/d/1J-9vaHbyddPEn8j9Y2eEzpSbwKxZcOjf/view?usp=drive_link) |
 | 2023 Pasture Age | int8 | 0 | [IdadePastagem2023_entrada_final.tif](https://drive.google.com/file/d/1Bv6qDyt7f1rdMg_0PFJjLRBjcqPZap3j/view?usp=drive_link) |
-| Imóveis | int8 | 0 | [Imoveis1_final_30m.tif](https://drive.google.com/file/d/1zJ2N0P0me3cWZ_vSm8XH5-RsS2JTu6a8/view?usp=drive_link) |
+| Property Size | int8 | 0 | [Imoveis1_final_30m.tif](https://drive.google.com/file/d/1zJ2N0P0me3cWZ_vSm8XH5-RsS2JTu6a8/view?usp=drive_link) |
 | Livestock Intensification | int8 | 0 | [integracao_tnc.tif](https://drive.google.com/file/d/1gbVr084AqWtZwFMOOJshihV_VQar8s1x/view?usp=drive_link) |
 | 2018 Land Cover | int8 | 0 | [AMZCERR_2018_final_30m.tif](https://drive.google.com/file/d/17npJX9ycBy3GuLVV-X0Cps5yScqvOeUV/view?usp=drive_link) |
 | 2023 Land Cover | int8 | 0 | [AMZCERR_2023_final_30m.tif](https://drive.google.com/file/d/1vPgKKrWT1qP7VFCqXA9QHdE645BZNSAf/view?usp=drive_link) |

@@ -4,7 +4,7 @@
 
 This step aims to quantify the relationship between land use and land cover change transitions and their associated explanatory variables using the **Weights of Evidence (WoE)** approach. The procedure follows the Bayesian framework implemented in **Dinamica EGO**, allowing the estimation, calibration, and validation of transition-specific spatial probabilities.
 
-Scripts used:
+### Scripts used:
 
 ⮕ [**`Calculate Weight of Evidence `**](Model_DinamicaEGO/02_CalcWOE.egomlx)
 
