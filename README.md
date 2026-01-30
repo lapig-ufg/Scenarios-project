@@ -70,3 +70,4 @@ This repository contains the following:
 |This research was supported by LAPIG/UFG| <img src="Docs/Figures/LAPIG Logo.png" width="25%" alt="Processo de Operacionalização"> |
 |This research was supported by TNC| <img src="Docs/Figures/TNC Logo.svg" width="30%" alt="Processo de Operacionalização"> |
 |This research was supported by LaMCAD/UFG| <img src="Docs/Figures/LaMCAD_Logo.svg" width="30%" alt="Processo de Operacionalização"> |
+
