@@ -26,7 +26,7 @@ Most variables followed a standardized processing workflow, implemented through 
 - Resampling to 30 m spatial resolution
 - Adjustment of raster visualization parameters for GIS software
 
-[`**Standard processing script**`](Data_processing/merge_clip_resample_reproject.sh)
+[`**Standard processing script**`](../Scripts/Data_processing/merge_clip_resample_reproject.sh)
 
 ## Online Data Acquisition
 
@@ -36,18 +36,18 @@ This script:
 1. Downloads the datasets from online sources
 2. Passes the data to the standard processing workflow
 
-[`**Online acquisition script:** `](Data_processing/data_acquisition_process.sh)
+[`**Online acquisition script:** `](../Scripts/Data_processing/data_acquisition_process.sh)
 
 
 ## Reclassification and NoData Handling
 
 When datasets required correction of NoData values or thematic simplification, specific scripts were applied:
 
-1. Script: [`NoData reclassification`](Data_processing/gdal_reclass_nodata.sh)
+1. Script: [`NoData reclassification`](../Scripts/Data_processing/gdal_reclass_nodata.sh)
 
-2. Script: [`MapBiomas class simplification (Collection 9)`](Data_processing/reclassificar_mapbiomas.sh)
+2. Script: [`MapBiomas class simplification (Collection 9)`](../Scripts/Data_processing/reclassificar_mapbiomas.sh)
 
-3. Script: [`Biomass and vegetation vigor reclassification`](Data_processing/reclassification_values_biomass_vigor.sh)
+3. Script: [`Biomass and vegetation vigor reclassification`](../Scripts/Data_processing/reclassification_values_biomass_vigor.sh)
 
 
 ## Derived Variables
@@ -56,14 +56,14 @@ When datasets required correction of NoData values or thematic simplification, s
 The deforestation age layer was generated using MapBiomas land use data from 1985 to 2023.
 
 - Environment: Google Colab
-- Script: [`IdadeDesmatamentoLULC.ipynb`](Data_processing/IdadeDesmatamentoLULC.ipynb)
+- Script: [`IdadeDesmatamentoLULC.ipynb`](../Scripts/Data_processing/IdadeDesmatamentoLULC.ipynb)
 
 ---
 
 ### Pasture Age
 Pasture age layers were obtained from pre-processed datasets using Google Earth Engine.
 
-- Script: [`pasture_age.js`](Data_processing/pasture_age.js)
+- Script: [`pasture_age.js`](../Scripts/Data_processing/pasture_age.js)
 
 ---
 
@@ -71,10 +71,10 @@ Pasture age layers were obtained from pre-processed datasets using Google Earth 
 
 For vector datasets requiring raster conversion or distance calculations:
 
--  [`Rasterization`](Data_processing/rasterize_vectors.sh)  
+-  [`Rasterization`](../Scripts/Data_processing/rasterize_vectors.sh)  
 
 
-- [`Euclidean distance calculation (R language)`](Data_processing/Calc_distance.r)  
+- [`Euclidean distance calculation (R language)`](../Scripts/Data_processing/Calc_distance.r)  
 
 ---
 
@@ -88,7 +88,7 @@ Processing steps included:
 - Reprojection and resampling
 
 **Script:**  
-[`territorial_units.sh`](Data_processing/UnidadesTerritoriais.sh)
+[`territorial_units.sh`](../Scripts/Data_processing/UnidadesTerritoriais.sh)
 
 ---
 
@@ -103,7 +103,7 @@ The DEM combines:
 - PRISM
 
 **Script:**  
-[`slope.js`](Data_processing/slope.js)
+[`slope.js`](../Scripts/Data_processing/slope.js)
 
 ---
 
@@ -118,7 +118,7 @@ After individual processing, all raster layers were spatially aligned to ensure:
 This step was necessary to avoid allocation errors in Dinamica EGO.
 
 **Script:**  
-[`Align_rasters.ipynb`](Data_processing/Align_rasters.ipynb)
+[`Align_rasters.ipynb`](../Scripts/Data_processing/Align_rasters.ipynb)
 
 ---
 
@@ -127,13 +127,13 @@ This step was necessary to avoid allocation errors in Dinamica EGO.
 To prepare datasets for the modeling stage, all processed variables were clipped by modeling regions.
 
 - Regionalization methodology:  
-  [`Methodology.md`](../../Projeto_CENARIOS/Regionalization/Methodology.md)
+  [`Methodology.md`](../Protocols/02_spatial_regionalization.md)
 
 - Regional boundaries:  
   [`Regions shape`](https://drive.google.com/drive/folders/1iDu-_7E0YfGVzNwI_gBjPckpnGJd88H3)
 
 - Clipping script:  
-  [`Variables_cut.py`](Data_processing/Variables_cut.py)
+  [`Variables_cut.py`](../Scripts/Data_processing/Variables_cut.py)
 
 ---
 
@@ -189,7 +189,7 @@ The table below summarizes all variables used in the project, including data typ
 ## Outputs
 - Fully standardized raster layers
 - Region-specific datasets for Dinamica EGO modeling
-- [`Metadata table for all variables`](Docs/Tables/Metadata.md)
+- [`Metadata table for all variables`](../Docs/Tables/Metadata.md)
 
 ---
 
