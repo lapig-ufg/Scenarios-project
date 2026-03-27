@@ -36,13 +36,13 @@
 
 Scenarios
 
-a) Inertial Governance (Business-as-Usual – BAU):
+a) Governance Inertia (Business-as-Usual – BAU):
 Projects future land-use trajectories under the continuation of current environmental governance and enforcement levels, in which legal protection instruments coexist with implementation gaps and persistent environmental liabilities in Legal Reserves (RLs) and Permanent Preservation Areas (APPs), allowing for ongoing deforestation and land-use change within both legal and illegal margins.
 
-b) Private Governance and Controlled Expansion (TNC-1):
+b) Collaborative Governance (CG/TNC-1):
 Assumes the presence of a spatial control mechanism, potentially private (e.g., DCF), that restricts direct conversion of native vegetation and strengthens the protection of APPs and RLs, assessing whether spatial containment alone can alter vegetation loss trajectories.
 
-c) Pasture Intensification and Optimization (TNC-2):
+c) Integrated Governance (IG/TNC-2):
 Maintains the configuration of TNC-1 while adding potential productivity gains from livestock intensification, thereby reducing the demand for new pasture areas. This scenario does not assume automatic regeneration, but evaluates how the combination of strengthened governance and improved productive efficiency can shift land-use conversion trajectories.
 </div>
 
